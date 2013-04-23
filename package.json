@@ -1,0 +1,16 @@
+{
+    "name" : "node-odesk-utils",
+    "version" : "0.0.1",
+    "description" : "utilities on top of node-odesk",
+    "main" : "./index.js",
+    "repository" : {
+        "type" : "git",
+        "url" : "http://github.com/dglittle/node-odesk-utils.git"
+    },
+    "dependencies" : {
+        "gl519" : "git://github.com/dglittle/gl519.git#gh-pages",
+        "request" : "*",
+        "node-odesk" : "*"
+    },
+    "license" : "MIT"
+}
