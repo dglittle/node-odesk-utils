@@ -76,7 +76,7 @@ odesk.prototype.postFixedPriceJob = function (user, pass, securityAnswer, teamRe
         ['job_type', 'Fixed'],
         ['job_length', ''],
         ['job_hours', ''],
-        ['job_budget', budget.toFixed(2)],
+        ['job_budget', (1 * budget).toFixed(2)],
         ['job_finish_date', getDateFromNow(1000 * 60 * 60 * 24 * 7)],
         ['initial_state', 'all'],
         ['ic_ac_clicked', 0],
