@@ -54,7 +54,7 @@ odesk.prototype.closeFixedPriceJob = function (user, pass, securityAnswer, teamR
 
 odesk.prototype.postFixedPriceJob = function (user, pass, securityAnswer, teamRef, catName, subCatName, title, desc, skills, budget, is_public) {
 
-    if (is_public === undefined) is_public = true
+    is_public = !((is_public === false) || (is_public == "private"))
 
     function getDateFromNow(fromNow) {
         var d = new Date(_.time() + fromNow)
