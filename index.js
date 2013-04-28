@@ -5,6 +5,19 @@ var request = require('request')
 var odesk = require('node-odesk')
 module.exports = odesk
 
+odesk.prototype._secureRequestOld = odesk.prototype._secureRequest
+odesk.prototype._secureRequest = function(method, path, data, callback) {
+    odesk.prototype._secureRequestOld.call(this, method, path, data, function (err, data) {
+        if (!err &&
+            typeof(data) == 'object' &&
+            1*data.code >= 400) {
+            return callback(new Error(data.message), data)
+        } else {
+            return callback(err, data)
+        }
+    })
+}
+
 odesk.prototype.getAll = function (path, params) {
     var kind = path.match(/([^\/]+)s(\?|$)/)[1]
     var kinds = kind + 's'
