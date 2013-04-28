@@ -32,24 +32,11 @@ odesk.prototype.getAll = function (path, params) {
     return [].concat.apply([], accum)
 }
 
-odesk.prototype.closeFixedPriceJob = function (user, pass, securityAnswer, companyRef, teamRef, jobRef, comment) {
+odesk.prototype.getApplicants = function (user, pass, securityAnswer, jobRef) {
 
-    if (!comment) comment = 'Great work!'
-
-    circumventAPI(user, pass, securityAnswer, '/e/' + companyRef + '/contracts/' + jobRef + '/close', [
-        ['payWhat', 'remaining'],
-        ['amount', ''],
-        ['reason', 104],
-        ['noStartReason', ''],
-        ['noStartComment', ''],
-        ['feedbackScores[feedbackScores1]', 5],
-        ['feedbackScores[feedbackScores2]', 5],
-        ['feedbackScores[feedbackScores3]', 5],
-        ['feedbackScores[feedbackScores4]', 5],
-        ['feedbackScores[feedbackScores5]', 5],
-        ['feedbackScores[feedbackScores6]', 5],
-        ['comment', comment]
-    ])
+    var s = circumventAPI(user, pass, securityAnswer, '/jobs/' + jobRef + '/applications?applicants')
+    var m = s.match(/odesk\.pageConfig\.applicants\s*=\s*(("(\\"|[^"])*"|[^;])*)/)
+    return _.unJson(m[1])
 }
 
 odesk.prototype.postFixedPriceJob = function (user, pass, securityAnswer, companyRef, teamRef, catName, subCatName, title, desc, skills, budget, is_public) {
@@ -101,6 +88,26 @@ odesk.prototype.postFixedPriceJob = function (user, pass, securityAnswer, compan
     ])
 }
 
+odesk.prototype.closeFixedPriceJob = function (user, pass, securityAnswer, companyRef, teamRef, jobRef, comment) {
+
+    if (!comment) comment = 'Great work!'
+
+    circumventAPI(user, pass, securityAnswer, '/e/' + companyRef + '/contracts/' + jobRef + '/close', [
+        ['payWhat', 'remaining'],
+        ['amount', ''],
+        ['reason', 104],
+        ['noStartReason', ''],
+        ['noStartComment', ''],
+        ['feedbackScores[feedbackScores1]', 5],
+        ['feedbackScores[feedbackScores2]', 5],
+        ['feedbackScores[feedbackScores3]', 5],
+        ['feedbackScores[feedbackScores4]', 5],
+        ['feedbackScores[feedbackScores5]', 5],
+        ['feedbackScores[feedbackScores6]', 5],
+        ['comment', comment]
+    ])
+}
+
 function circumventAPI(user, pass, securityAnswer, path, multipart) {
 
     var url = 'https://www.odesk.com' + path
@@ -148,6 +155,8 @@ function circumventAPI(user, pass, securityAnswer, path, multipart) {
 
         s = req('get', url)
     }
+
+    if (!multipart) return s
 
     multipart.unshift(['_token', getToken(s)])
     multipart = _.map(multipart, function (m) {
@@ -200,7 +209,7 @@ function circumventAPI(user, pass, securityAnswer, path, multipart) {
     })
     r.write(multipart)
     r.end()
-    _.consume(_.p())
+    return _.consume(_.p())
 }
 
 var cats = {
