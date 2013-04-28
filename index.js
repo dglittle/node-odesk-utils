@@ -32,11 +32,11 @@ odesk.prototype.getAll = function (path, params) {
     return [].concat.apply([], accum)
 }
 
-odesk.prototype.closeFixedPriceJob = function (user, pass, securityAnswer, teamRef, jobRef, comment) {
+odesk.prototype.closeFixedPriceJob = function (user, pass, securityAnswer, companyRef, teamRef, jobRef, comment) {
 
     if (!comment) comment = 'Great work!'
 
-    circumventAPI(user, pass, securityAnswer, '/e/' + teamRef + '/contracts/' + jobRef + '/close', [
+    circumventAPI(user, pass, securityAnswer, '/e/' + companyRef + '/contracts/' + jobRef + '/close', [
         ['payWhat', 'remaining'],
         ['amount', ''],
         ['reason', 104],
@@ -52,7 +52,7 @@ odesk.prototype.closeFixedPriceJob = function (user, pass, securityAnswer, teamR
     ])
 }
 
-odesk.prototype.postFixedPriceJob = function (user, pass, securityAnswer, teamRef, catName, subCatName, title, desc, skills, budget, is_public) {
+odesk.prototype.postFixedPriceJob = function (user, pass, securityAnswer, companyRef, teamRef, catName, subCatName, title, desc, skills, budget, is_public) {
 
     is_public = !((is_public === false) || (is_public == "private"))
 
@@ -62,7 +62,7 @@ odesk.prototype.postFixedPriceJob = function (user, pass, securityAnswer, teamRe
         return zeroPrefix(d.getMonth() + 1) + "-" + zeroPrefix(d.getDate()) + "-" + d.getFullYear()
     }
 
-    circumventAPI(user, pass, securityAnswer, '/e/' + teamRef + '/jobs/new/', [
+    circumventAPI(user, pass, securityAnswer, '/e/' + companyRef + '/jobs/new/', [
         ['team', teamRef],
         ['category', catName],
         ['subcategory', cats[catName][subCatName]],
