@@ -101,11 +101,11 @@ odesk.prototype.postFixedPriceJob = function (user, pass, securityAnswer, compan
     ])
 }
 
-odesk.prototype.closeFixedPriceJob = function (user, pass, securityAnswer, companyRef, teamRef, jobRef, comment) {
+odesk.prototype.closeFixedPriceContract = function (user, pass, securityAnswer, companyRef, teamRef, contractRef, comment) {
 
     if (!comment) comment = 'Great work!'
 
-    circumventAPI(user, pass, securityAnswer, '/e/' + companyRef + '/contracts/' + jobRef + '/close', [
+    circumventAPI(user, pass, securityAnswer, '/e/' + companyRef + '/contracts/' + contractRef + '/close', [
         ['payWhat', 'remaining'],
         ['amount', ''],
         ['reason', 104],
