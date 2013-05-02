@@ -101,24 +101,42 @@ odesk.prototype.postFixedPriceJob = function (user, pass, securityAnswer, compan
     ])
 }
 
-odesk.prototype.closeFixedPriceContract = function (user, pass, securityAnswer, companyRef, teamRef, contractRef, comment) {
+odesk.prototype.closeFixedPriceContract = function (user, pass, securityAnswer, companyRef, teamRef, contractRef, comment, noPay) {
 
-    if (!comment) comment = 'Great work!'
+    if (!noPay) {
+        if (!comment) comment = 'Great work!'
 
-    circumventAPI(user, pass, securityAnswer, '/e/' + companyRef + '/contracts/' + contractRef + '/close', [
-        ['payWhat', 'remaining'],
-        ['amount', ''],
-        ['reason', 104],
-        ['noStartReason', ''],
-        ['noStartComment', ''],
-        ['feedbackScores[feedbackScores1]', 5],
-        ['feedbackScores[feedbackScores2]', 5],
-        ['feedbackScores[feedbackScores3]', 5],
-        ['feedbackScores[feedbackScores4]', 5],
-        ['feedbackScores[feedbackScores5]', 5],
-        ['feedbackScores[feedbackScores6]', 5],
-        ['comment', comment]
-    ])
+        circumventAPI(user, pass, securityAnswer, '/e/' + companyRef + '/contracts/' + contractRef + '/close', [
+            ['payWhat', 'remaining'],
+            ['amount', ''],
+            ['reason', 104],
+            ['noStartReason', ''],
+            ['noStartComment', ''],
+            ['feedbackScores[feedbackScores1]', 5],
+            ['feedbackScores[feedbackScores2]', 5],
+            ['feedbackScores[feedbackScores3]', 5],
+            ['feedbackScores[feedbackScores4]', 5],
+            ['feedbackScores[feedbackScores5]', 5],
+            ['feedbackScores[feedbackScores6]', 5],
+            ['comment', comment]
+        ])
+    } else {
+        circumventAPI(user, pass, securityAnswer, '/e/' + companyRef + '/contracts/' + contractRef + '/close', [
+            ['amount', ''],
+            ['payWhat', 'nothing'],
+            ['reason', ''],
+            ['workAgain', 'yes'],
+            ['noStartReason', 'API_REAS_CONTRACTOR_NOT_RESPONSIVE'],
+            ['noStartComment', comment || ''],
+            ['feedbackScores[feedbackScores1]', ''],
+            ['feedbackScores[feedbackScores2]', ''],
+            ['feedbackScores[feedbackScores3]', ''],
+            ['feedbackScores[feedbackScores4]', ''],
+            ['feedbackScores[feedbackScores5]', ''],
+            ['feedbackScores[feedbackScores6]', ''],
+            ['comment', '']
+        ])
+    }
 }
 
 function circumventAPI(user, pass, securityAnswer, path, multipart) {
