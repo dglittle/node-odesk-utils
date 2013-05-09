@@ -1,4 +1,3 @@
-
 var _ = require('gl519')
 var request = require('request')
 
@@ -7,6 +6,10 @@ module.exports = odesk
 
 odesk.prototype._secureRequestOld = odesk.prototype._secureRequest
 odesk.prototype._secureRequest = function(method, path, data, callback) {
+    if (typeof data == 'function') {
+        callback = data
+        data = null
+    }
     odesk.prototype._secureRequestOld.call(this, method, path, data, function (err, data) {
         if (!err &&
             typeof(data) == 'object' &&
